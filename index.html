@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDUCATIONAL DEMO — Instagram Unban Scam Flow</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif; }
+  body { background:#0f0f1a; color:#fff; display:flex; justify-content:center; padding:20px; }
+  .card { background:#1a1a2e; border-radius:12px; padding:30px; max-width:420px; width:100%; margin-top:40px;
+          border:1px solid #333; text-align:center; }
+  h1 { font-size:22px; margin-bottom:10px; color:#e1306c; }
+  .banner { background:#7a0d0d; color:#ffd6d6; padding:12px; border-radius:8px; font-size:13px;
+            font-weight:bold; margin-bottom:20px; border:1px solid #ff4d4d; }
+  .label { font-size:12px; color:#aaa; text-align:left; margin:12px 0 4px; }
+  input { width:100%; padding:12px; border-radius:8px; border:1px solid #444;
+          background:#252540; color:#fff; font-size:14px; }
+  .fake-tag { font-size:10px; color:#ffcc00; display:block; text-align:right; margin-top:2px; }
+  button { width:100%; margin-top:20px; padding:14px; border:none; border-radius:8px;
+           background:linear-gradient(45deg,#e1306c,#833ab4); color:#fff; font-size:16px;
+           font-weight:bold; cursor:pointer; }
+  .simulated { margin-top:20px; padding:25px; border:2px dashed #ffcc00; border-radius:8px;
+               color:#ffcc00; font-size:13px; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- STEP 0: Demo password gate (hardcoded, nothing stored) -->
+  <div id="step0">
+    <div class="banner">⚠ EDUCATIONAL DEMO — This is a MOCKUP showing how "Instagram unban" scams work. Nothing here is real.</div>
+    <h1>Demo Access</h1>
+    <p style="font-size:12px;color:#888;margin:10px 0;">(Demo password: <b>training</b> — hardcoded, stores nothing)</p>
+    <div class="label">Password</div>
+    <input type="password" id="pw" placeholder="Enter demo password">
+    <button onclick="checkPw()">Enter Demo</button>
+  </div>
+
+  <!-- STEP 1: Fake form -->
+  <div id="step1" class="hidden">
+    <div class="banner">⚠ EDUCATIONAL DEMO — No data is entered, sent, or stored. All fields are fake.</div>
+    <h1>INSTA ID UNBAN TOOL</h1>
+    <p style="font-size:13px;color:#ccc;margin:12px 0;">
+      <b>[This text mimics scam wording — do not believe sites like this:]</b><br>
+      "Unban Instagram id's easily — just type your username, Gmail and pay, then after 5 minutes see the magic."
+    </p>
+    <div class="label">Username <span class="fake-tag">(SAMPLE ONLY — typing here does nothing)</span></div>
+    <input type="text" placeholder="e.g. your_username" value="sample_user_123">
+    <div class="label">Gmail <span class="fake-tag">(SAMPLE ONLY — typing here does nothing)</span></div>
+    <input type="text" placeholder="e.g. you@gmail.com" value="sample@gmail.com">
+    <button onclick="showQr()">Proceed (Simulated)</button>
+  </div>
+
+  <!-- STEP 2: Simulated payment screen -->
+  <div id="step2" class="hidden">
+    <div class="banner">⚠ EDUCATIONAL DEMO — In a real scam, this screen shows a QR code to steal your money.</div>
+    <h1>Simulated "Payment" Screen</h1>
+    <div class="simulated">
+      [ A real scam site would place its QR code image HERE ]<br><br>
+      No QR code is shown because this is a mockup.<br>
+      Paying a QR like this sends money directly to a scammer.
+    </div>
+    <div class="label">UTR / Time / Name <span class="fake-tag">(SAMPLE ONLY — typing does nothing)</span></div>
+    <input type="text" placeholder="UTR number" value="XXXXXXXXXXXX">
+    <input type="text" placeholder="Time" style="margin-top:8px" value="00:00">
+    <input type="text" placeholder="Name" style="margin-top:8px" value="Sample Name">
+    <button onclick="endDemo()">Proceed (Simulated)</button>
+  </div>
+
+  <!-- STEP 3: Ending -->
+  <div id="step3" class="hidden">
+    <div class="banner">⚠ EDUCATIONAL DEMO COMPLETE</div>
+    <h1>What a real scam does next</h1>
+    <p style="font-size:13px;color:#ccc;text-align:left;line-height:1.6;margin-top:12px;">
+      1. Your username + email are used for account takeover attempts or sold.<br><br>
+      2. Your UTR/payment confirms money was sent to the scammer — it is never returned.<br><br>
+      3. No "unban" ever happens. Only Instagram's official app or
+      <b>help.instagram.com</b> can appeal a ban.<br><br>
+      <b>Never pay or enter personal details on sites like this.</b>
+    </p>
+  </div>
+
+</div>
+
+<script>
+  // Purely visual demo — no network requests, no storage, no data collection.
+  function checkPw() {
+    if (document.getElementById('pw').value === 'training') {
+      document.getElementById('step0').classList.add('hidden');
+      document.getElementById('step1').classList.remove('hidden');
+    } else {
+      alert('Demo password is: training');
+    }
+  }
+  function showQr() {
+    document.getElementById('step1').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+  }
+  function endDemo() {
+    document.getElementById('step2').classList.add('hidden');
+    document.getElementById('step3').classList.remove('hidden');
+  }
+</script>
+</body>
+</html>
